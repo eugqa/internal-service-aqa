@@ -16,7 +16,7 @@ class ValidationTests extends BaseTest {
     @Story("Проверка API-ключа")
     @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Запрос без X-Api-Key отклоняется с 401")
-    void testRequestWithoutApiKey() { // <-- ПЕРЕИМЕНОВАНО
+    void testRequestWithoutApiKey() {
         requestWithoutApiKey()
                 .formParam("token", validToken())
                 .formParam("action", "LOGIN")
@@ -30,7 +30,7 @@ class ValidationTests extends BaseTest {
     @Story("Проверка API-ключа")
     @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Запрос с неверным X-Api-Key отклоняется с 401")
-    void testRequestWithWrongApiKey() { // <-- ПЕРЕИМЕНОВАНО
+    void testRequestWithWrongApiKey() {
         requestWithApiKey("wrong-key-123")
                 .formParam("token", validToken())
                 .formParam("action", "LOGIN")
