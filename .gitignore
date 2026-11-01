@@ -1,0 +1,28 @@
+@'
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Allure
+allure-results/
+allure-report/
+
+# Local env
+*.local
+'@ | Set-Content -Path .gitignore -Encoding utf8
