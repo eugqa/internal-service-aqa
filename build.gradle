@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'com.example.aqa'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    wiremockVersion = '3.12.1'
+    allureVersion = '2.29.0'
+}
+
+dependencies {
+    // --- Spring Boot: тестовая инфраструктура (AssertJ, JUnit 5, Jackson, Hamcrest) ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // --- HTTP-клиент для запросов к тестируемому приложению ---
+    testImplementation 'io.rest-assured:rest-assured'
+
+    // --- WireMock: мокирование внешних /auth и /doAction ---
+    testImplementation "org.wiremock:wiremock-standalone:${wiremockVersion}"
+
+    // --- Allure: отчёты для нетехнического читателя ---
+    testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
+
+    // --- Lombok (опционально, для DTO и хелперов) ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+// JUnit 5 + параметры запуска
+test {
+    useJUnitPlatform {
+        // не запускать пустые контейнеры Allure при параллельном прогоне
+        includeEngines 'junit-jupiter'
+    }
+
+    // Базовый URL тестируемого приложения. Переопределяется из CLI:
+    //   ./gradlew test -Dbase.url=http://some-host:8080
+    systemProperty 'base.url', System.getProperty('base.url', 'http://localhost:8080')
+
+    // Базовый URL мока внешнего сервиса (должен совпадать с -Dmock у приложения)
+    systemProperty 'mock.url', System.getProperty('mock.url', 'http://localhost:8888')
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+allure {
+    version = allureVersion
+    useJUnit5 {
+        version = allureVersion
+    }
+    // отчёт будет лежать в build/reports/allure-report
+    report {
+        // открывается командой ./gradlew allureServe
+    }
+}
+
+// не собираем boot-jar — это только тесты
+bootJar { enabled = false }
+jar     { enabled = false }

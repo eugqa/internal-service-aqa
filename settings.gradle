@@ -1,0 +1,1 @@
+'rootProject.name = ''internal-service-aqa''' | Set-Content -Path settings.gradle -Encoding utf8
