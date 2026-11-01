@@ -2,7 +2,11 @@ package com.example.aqa.tests;
 
 import com.example.aqa.config.BaseTest;
 import com.example.aqa.config.TestConfig;
-import io.qameta.allure.*;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +20,7 @@ class ValidationTests extends BaseTest {
     @Story("Проверка API-ключа")
     @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Запрос без X-Api-Key отклоняется с 401")
-    void testRequestWithoutApiKey() { // <-- ПЕРЕИМЕНОВАНО
+    void testRequestWithoutApiKey() {
         requestWithoutApiKey()
                 .formParam("token", validToken())
                 .formParam("action", "LOGIN")
@@ -30,7 +34,7 @@ class ValidationTests extends BaseTest {
     @Story("Проверка API-ключа")
     @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Запрос с неверным X-Api-Key отклоняется с 401")
-    void testRequestWithWrongApiKey() { // <-- ПЕРЕИМЕНОВАНО
+    void testRequestWithWrongApiKey() {
         requestWithApiKey("wrong-key-123")
                 .formParam("token", validToken())
                 .formParam("action", "LOGIN")
